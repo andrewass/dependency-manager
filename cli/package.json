@@ -2,8 +2,8 @@
   "name": "cli",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
   "scripts": {
+    "main": "node src/index.ts",
     "build": "tsc"
   },
   "author": "",

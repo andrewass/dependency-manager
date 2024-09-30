@@ -1,9 +1,0 @@
-{
-  "name": "depmanager",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-  }
-}
