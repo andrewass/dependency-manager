@@ -1,16 +1,20 @@
-import { exec } from 'child_process';
+import {exec} from 'child_process';
+import {ApplicationDependencies} from "./model/ApplicationDependencies.js";
+import {promisify} from "util";
 
-function getDependencies(){
-    const herll = exec("npm ls --json --all");
-    console.log("JSON  "+JSON.stringify(herll));
-    //console.log("Hello");
+
+const asyncExec = promisify(exec)
+
+async function getApplicationDependencies(): Promise<ApplicationDependencies> {
+    const {stdout, stderr} = await asyncExec("npm ls --json --all");
+    if (stderr) {
+        console.log(`stderror : ${stderr}`);
+    }
+    return JSON.parse(stdout);
 }
 
-function main(){
-    const projectDir = process.cwd();
-    console.log(`Running in project directory : ${projectDir}`);
-
-    getDependencies();
+async function main() {
+    const applicationDependencies = await getApplicationDependencies();
 }
 
-main();
+main().catch(error => console.log(error));

@@ -1,5 +1,6 @@
 
 export interface Dependency{
-    name: string
-    version: string
+    version: string,
+    resolved?: string,
+    overridden?: boolean
 }
