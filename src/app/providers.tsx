@@ -5,5 +5,5 @@ export function Providers({children}: { children: React.ReactNode }) {
         <NextUIProvider>
             {children}
         </NextUIProvider>
-    )
+    );
 }

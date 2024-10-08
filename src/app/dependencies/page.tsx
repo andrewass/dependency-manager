@@ -1,8 +1,7 @@
 import {promisify} from "util";
 import {exec} from 'child_process';
 import {ApplicationDependencies} from "@/app/model/ApplicationDependencies";
-import DependencyAccordion from "@/app/dependencies/DependencyAccordion";
-import {Accordion, AccordionItem} from "@nextui-org/react";
+import ApplicationDependencyAccordion from "@/app/dependencies/ApplicationDependencyAccordion";
 
 const asyncExec = promisify(exec);
 
@@ -16,19 +15,10 @@ async function getApplicationDependencies(): Promise<ApplicationDependencies> {
 
 
 export default async function DependencyPage() {
-    const dependencies: ApplicationDependencies = await getApplicationDependencies();
-
-    Object.entries(dependencies.dependencies).forEach(([key, value]) => console.log("name is " + key));
-//<DependencyAccordion key={index} index={index} name={key}/>
-    /*
-    {Object.entries(dependencies.dependencies).slice(0, 2).map(([key, value], index) =>
-                    <AccordionItem key={key}>Hello</AccordionItem>
-                )}
-     */
+    const application: ApplicationDependencies = await getApplicationDependencies();
     return (
         <div>
-            <DependencyAccordion dependencies={dependencies}/>
+            <ApplicationDependencyAccordion application={application}/>
         </div>
     )
-
 }
