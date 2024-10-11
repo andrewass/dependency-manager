@@ -2,6 +2,7 @@ import {promisify} from "util";
 import {exec} from 'child_process';
 import {ApplicationDependencies} from "@/app/model/ApplicationDependencies";
 import ApplicationDependencyAccordion from "@/app/dependencies/ApplicationDependencyAccordion";
+import DependenciesLeftMenu from "@/app/dependencies/DependenciesLeftMenu";
 
 const asyncExec = promisify(exec);
 
@@ -17,7 +18,8 @@ async function getApplicationDependencies(): Promise<ApplicationDependencies> {
 export default async function DependencyPage() {
     const application: ApplicationDependencies = await getApplicationDependencies();
     return (
-        <div>
+        <div className="flex flex-row">
+            <DependenciesLeftMenu/>
             <ApplicationDependencyAccordion application={application}/>
         </div>
     )

@@ -2,6 +2,7 @@ import React from "react";
 import {Providers} from "@/app/providers";
 import {Metadata} from "next";
 import "./globals.css";
+import NavbarHeader from "@/app/components/NavbarHeader";
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -13,6 +14,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <html lang="en" className="dark">
         <body>
         <Providers>
+            <NavbarHeader/>
             {children}
         </Providers>
         </body>
