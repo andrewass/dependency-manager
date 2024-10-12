@@ -2,8 +2,7 @@ import {Application} from "@/app/model/Application";
 import DependenciesLeftMenu from "@/app/dependencies/DependenciesLeftMenu";
 import {Dependency} from "@/app/model/Dependency";
 import {execAsync} from "@/app/util/exec";
-
-
+import DependenciesTable from "@/app/dependencies/DependenciesTable";
 
 interface ApplicationDependenciesResponse {
     version: string
@@ -33,15 +32,15 @@ function mapToApplication(
         const outdatedDep = outdatedDependencies[name]
         if (outdatedDep) {
             return {
-                name: name,
-                version: outdatedDep.current,
+                package: name,
+                current: outdatedDep.current,
                 wanted: outdatedDep.wanted,
                 latest: outdatedDep.latest
             }
         } else {
             return {
-                name: name,
-                version: dependency.version,
+                package: name,
+                current: dependency.version,
                 wanted: dependency.version,
                 latest: dependency.version
             }
@@ -65,22 +64,17 @@ async function getApplicationDependencies(): Promise<Application> {
     return mapToApplication(applicationResponse, outdatedDependencies);
 }
 
-
 export default async function DependencyPage() {
-    const dependencies = await getApplicationDependencies();
+    const application = await getApplicationDependencies();
 
     return (
         <div className="flex flex-row">
             <div className="basis-1/5">
                 <DependenciesLeftMenu/>
             </div>
+            <div className="basis-4/5">
+                <DependenciesTable application={application}/>
+            </div>
         </div>
     );
 }
-
-/*
- --asyncExec("npm list --json --depth=0"),
- <div className="basis-4/5">
-                <DependenciesTable application={application}/>
-            </div>
- */

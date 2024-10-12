@@ -1,7 +1,7 @@
 
 export interface Dependency{
-    name: string
-    version: string,
+    package: string
+    current: string,
     wanted: string,
     latest: string
 }
