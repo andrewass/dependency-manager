@@ -1,7 +1,7 @@
 
 export interface Dependency{
+    name: string
     version: string,
-    resolved?: string,
-    overridden?: boolean
-    dependencies: Record<string, Dependency>
+    wanted: string,
+    latest: string
 }

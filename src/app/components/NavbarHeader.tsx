@@ -17,12 +17,12 @@ export default function NavbarHeader(){
             >
                 <NavbarItem isActive={activeItem === 1}>
                     <Link color="foreground" href="#">
-                        Features
+                        Dependencies
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive={activeItem === 2}>
                     <Link href="#" aria-current="page">
-                        Customers
+                        Install
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive={activeItem === 3}>
