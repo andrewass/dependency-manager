@@ -1,8 +1,8 @@
 import {Application} from "@/app/model/Application";
 import DependenciesLeftMenu from "@/app/dependencies/DependenciesLeftMenu";
 import {Dependency} from "@/app/model/Dependency";
-import {execAsync} from "@/app/util/exec";
 import DependenciesTable from "@/app/dependencies/DependenciesTable";
+import {execAsync} from "@/app/util/exec";
 
 interface ApplicationDependenciesResponse {
     version: string
@@ -20,13 +20,9 @@ interface OutdatedDependency {
     latest: string
 }
 
-interface OutdatedDependenciesResponse {
-    outdatedDeps: Record<string, OutdatedDependency>
-}
-
 function mapToApplication(
     application: ApplicationDependenciesResponse,
-    outdatedDependencies: OutdatedDependenciesResponse
+    outdatedDependencies: Record<string, OutdatedDependency>
 ): Application {
     const dependencies: Dependency[] = Object.entries(application.dependencies).map(([name, dependency]): Dependency => {
         const outdatedDep = outdatedDependencies[name]
@@ -58,8 +54,8 @@ async function getApplicationDependencies(): Promise<Application> {
         execAsync("npm list --json --depth=0"),
         execAsync("npm outdated --json")
     ]);
-    const applicationResponse: ApplicationDependenciesResponse = JSON.parse(appDepRespose);
-    const outdatedDependencies: OutdatedDependenciesResponse = JSON.parse(outdatedDepResponse);
+    const applicationResponse: ApplicationDependenciesResponse = JSON.parse(appDepRespose as string);
+    const outdatedDependencies: Record<string, OutdatedDependency> = JSON.parse(outdatedDepResponse as string);
 
     return mapToApplication(applicationResponse, outdatedDependencies);
 }

@@ -34,42 +34,43 @@ function renderBodyCell(dependency: Dependency, columnKey: Key): ReactNode {
 }
 
 export default function DependenciesTable({application}: Props) {
-
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+    const [selectedDependencies, setSelectedDependencies] = useState<string[]>([]);
 
     function updateSelectedRows(keys: Selection) {
         if (keys === "all") {
-            setSelectedRows([keys])
+            setSelectedDependencies([keys])
         } else {
-            setSelectedRows(Array.from(keys) as string[])
+            setSelectedDependencies(Array.from(keys) as string[])
         }
     }
 
     return (
-        <Table
-            removeWrapper
-            className={"pr-16 pt-8"}
-            aria-label="Table of all the applications dependencies"
-            selectionMode="multiple"
-            onSelectionChange={(keys: Selection) => updateSelectedRows(keys)}
-        >
-            <TableHeader columns={columns}>
-                {(column) =>
-                    <TableColumn key={column.key}>
-                        {column.label === "Actions"
-                            ? <DependencyHeaderActionMenu/>
-                            : <p>{column.label}</p>
-                        }
-                    </TableColumn>
-                }
-            </TableHeader>
-            <TableBody items={application.dependencies}>
-                {(item: Dependency) => (
-                    <TableRow key={item.package}>
-                        {(columnKey) => <TableCell>{renderBodyCell(item, columnKey)}</TableCell>}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <div>
+            <Table
+                removeWrapper
+                className={"pr-16 pt-8"}
+                aria-label="Table of all the application dependencies"
+                selectionMode="multiple"
+                onSelectionChange={(keys: Selection) => updateSelectedRows(keys)}
+            >
+                <TableHeader>
+                    {columns.map((column) =>
+                        <TableColumn key={column.key}>
+                            {column.label === "Actions"
+                                ? <DependencyHeaderActionMenu dependencies={selectedDependencies}/>
+                                : <p>{column.label}</p>
+                            }
+                        </TableColumn>
+                    )}
+                </TableHeader>
+                <TableBody items={application.dependencies}>
+                    {(item: Dependency) => (
+                        <TableRow key={item.package}>
+                            {(columnKey) => <TableCell>{renderBodyCell(item, columnKey)}</TableCell>}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </div>
     );
 }
