@@ -1,10 +1,21 @@
 "use client";
 
-import {Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
+import {
+    Button,
+    Selection,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import {Application} from "@/app/model/Application";
 import {Dependency} from "@/app/model/Dependency";
 import {Key, ReactNode, useState} from "react";
-import {DependencyHeaderActionMenu, DependencyRowActionMenu} from "@/app/dependencies/DependencyRowActionMenu";
+import {DependencyHeaderActionMenu, DependencyRowActionMenu} from "@/app/dependencies/DependencyActionMenus";
+import ActionModal from "@/app/components/ActionModal";
 
 interface Props {
     application: Application
@@ -35,6 +46,7 @@ function renderBodyCell(dependency: Dependency, columnKey: Key): ReactNode {
 
 export default function DependenciesTable({application}: Props) {
     const [selectedDependencies, setSelectedDependencies] = useState<string[]>([]);
+    const {onOpen, isOpen, onOpenChange} = useDisclosure();
 
     function updateSelectedRows(keys: Selection) {
         if (keys === "all") {
@@ -42,6 +54,10 @@ export default function DependenciesTable({application}: Props) {
         } else {
             setSelectedDependencies(Array.from(keys) as string[])
         }
+    }
+
+    function onOperationStart(){
+        onOpen()
     }
 
     return (
@@ -57,7 +73,9 @@ export default function DependenciesTable({application}: Props) {
                     {columns.map((column) =>
                         <TableColumn key={column.key}>
                             {column.label === "Actions"
-                                ? <DependencyHeaderActionMenu dependencies={selectedDependencies}/>
+                                ? <DependencyHeaderActionMenu
+                                    onOperationStart={onOperationStart}
+                                />
                                 : <p>{column.label}</p>
                             }
                         </TableColumn>
@@ -71,6 +89,11 @@ export default function DependenciesTable({application}: Props) {
                     )}
                 </TableBody>
             </Table>
+            <ActionModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                dependencies={selectedDependencies}
+            />
         </div>
     );
 }

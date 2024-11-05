@@ -1,11 +1,6 @@
 import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 import React from "react";
 import {CiMenuKebab} from "react-icons/ci";
-import {updateDependencies} from "@/app/dependencies/actions";
-
-interface HeaderProps{
-    dependencies: string[]
-}
 
 export function DependencyRowActionMenu() {
     return (
@@ -24,7 +19,12 @@ export function DependencyRowActionMenu() {
     );
 }
 
-export function DependencyHeaderActionMenu({dependencies}: HeaderProps){
+interface HeaderProps{
+    onOperationStart: () => void
+}
+
+export function DependencyHeaderActionMenu({onOperationStart}: HeaderProps){
+
     return (
         <Dropdown>
             <DropdownTrigger>
@@ -33,7 +33,7 @@ export function DependencyHeaderActionMenu({dependencies}: HeaderProps){
                 </Button>
             </DropdownTrigger>
             <DropdownMenu>
-                <DropdownItem onClick={() => updateDependencies(dependencies)}>
+                <DropdownItem onClick={onOperationStart}>
                     Update selected
                 </DropdownItem>
                 <DropdownItem>Upgrade selected to latest</DropdownItem>
